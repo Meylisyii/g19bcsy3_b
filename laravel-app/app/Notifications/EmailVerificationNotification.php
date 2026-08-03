@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use URL;
+use Illuminate\Support\Facades\URL;
 
 class EmailVerificationNotification extends Notification implements ShouldQueue
 {

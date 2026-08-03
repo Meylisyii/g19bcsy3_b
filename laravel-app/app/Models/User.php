@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\EmailVerificationNotification;
+use App\Notifications\GoogleSigninAlertNotification;
 use App\Notifications\ResetPasswordNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Auth\MustVerifyEmail;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -21,11 +23,6 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, MustVerifyEmail;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -42,5 +39,10 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token, $callback_url = null)
     {
         $this->notify(new ResetPasswordNotification($token, $callback_url));
+    }
+
+    public function sendGoogleSigninAlertNotification($ipAddress = null, $userAgent = null)
+    {
+        $this->notify(new GoogleSigninAlertNotification($ipAddress, $userAgent));
     }
 }

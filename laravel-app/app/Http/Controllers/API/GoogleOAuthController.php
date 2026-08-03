@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 class GoogleOAuthController extends Controller
 {
@@ -44,6 +44,8 @@ class GoogleOAuthController extends Controller
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
         }
+
+        $user->sendGoogleSigninAlertNotification($request->ip(), $request->userAgent());
 
         $token = $user->createToken('auth_token', ['exchange-new-token'], now()->addMinute())->plainTextToken;
 
